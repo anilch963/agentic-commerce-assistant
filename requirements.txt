@@ -6,3 +6,4 @@ pydantic>=2.10
 scikit-learn>=1.6
 httpx>=0.28
 anthropic>=0.60  # only used when LLM_PROVIDER=anthropic
+openai>=1.50  # only used when LLM_PROVIDER=openai
