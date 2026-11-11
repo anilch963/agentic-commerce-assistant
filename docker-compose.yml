@@ -1,0 +1,27 @@
+# Runs each MCP server as its own service, the way you would deploy them in production.
+# The API reaches them over streamable HTTP. `docker compose up --build`, then open http://localhost:8000
+services:
+  catalog-mcp:
+    build: .
+    command: ["python", "-m", "app.mcp_servers.catalog_server", "--http", "--port", "8101"]
+    healthcheck: { disable: true }
+
+  orders-mcp:
+    build: .
+    command: ["python", "-m", "app.mcp_servers.orders_server", "--http", "--port", "8102"]
+    healthcheck: { disable: true }
+
+  support-mcp:
+    build: .
+    command: ["python", "-m", "app.mcp_servers.support_server", "--http", "--port", "8103"]
+    healthcheck: { disable: true }
+
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: [{ path: .env, required: false }]
+    environment:
+      CATALOG_MCP_URL: http://catalog-mcp:8101/mcp
+      ORDERS_MCP_URL: http://orders-mcp:8102/mcp
+      SUPPORT_MCP_URL: http://support-mcp:8103/mcp
+    depends_on: [catalog-mcp, orders-mcp, support-mcp]

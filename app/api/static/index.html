@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iPhone Store Agents</title>
+<style>
+  :root { --bg:#f5f5f7; --card:#fff; --ink:#1d1d1f; --muted:#6e6e73; --accent:#0071e3; --line:#e5e5ea; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.5 -apple-system, system-ui, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+  main { max-width:760px; margin:0 auto; height:100vh; display:flex; flex-direction:column; padding:16px; }
+  header h1 { font-size:20px; margin:4px 0; }
+  header p { margin:0 0 12px; color:var(--muted); font-size:13px; }
+  #log { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:4px 0 12px; }
+  .msg { max-width:88%; padding:10px 14px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  .user { align-self:flex-end; background:var(--accent); color:#fff; border:none; }
+  .meta { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
+  .chip { font-size:11px; padding:2px 8px; border-radius:99px; background:var(--bg); color:var(--muted); }
+  .cite { color:var(--accent); font-size:12px; }
+  table { border-collapse:collapse; margin:6px 0; font-size:13px; }
+  td, th { border:1px solid var(--line); padding:4px 8px; text-align:left; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+  .chips button { border:1px solid var(--line); background:var(--card); border-radius:99px; padding:4px 10px; font-size:12px; cursor:pointer; }
+  form { display:flex; gap:8px; }
+  input { flex:1; padding:12px; border-radius:12px; border:1px solid var(--line); font-size:15px; }
+  form button { padding:0 18px; border:none; border-radius:12px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>iPhone Store Assistant</h1>
+    <p>10 LangGraph agents, 3 MCP servers, RAG over store policies. Chips under each reply show which agents and tools ran.</p>
+  </header>
+  <div id="log"></div>
+  <div class="chips" id="examples"></div>
+  <form id="f"><input id="q" placeholder="Ask about iPhones, offers, orders or policies" autocomplete="off"><button>Send</button></form>
+</main>
+<script>
+const examples = ["Compare iPhone 17 vs 17 Pro", "Best iPhone for photography under 1 lakh",
+  "Is the 17 Pro Max in stock in Hyderabad?", "Trade in my iPhone 13 in good condition for a 17 Pro",
+  "Can I return an opened iPhone?", "Add the 17 Pro 256GB to my cart", "Checkout with UPI", "Where is my order ORD-1001?"];
+let sessionId = null;
+const log = document.getElementById("log");
+
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function md(text) {
+  const lines = esc(text).split("\n"); const out = []; let table = [];
+  const flush = () => { if (!table.length) return;
+    const rows = table.filter(r => !/^\|[-| ]+\|$/.test(r));
+    out.push("<table>" + rows.map(r => "<tr>" + r.slice(1, -1).split("|").map(c => `<td>${c.trim()}</td>`).join("") + "</tr>").join("") + "</table>");
+    table = []; };
+  for (const l of lines) { if (l.startsWith("|")) { table.push(l); continue; } flush(); out.push(l); }
+  flush();
+  return out.join("<br>").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\[([\w_.-]+\.md#[^\]]+)\]/g, '<span class="cite">[$1]</span>');
+}
+function add(role, html, meta) {
+  const d = document.createElement("div"); d.className = "msg " + role; d.innerHTML = html;
+  if (meta) { const m = document.createElement("div"); m.className = "meta";
+    meta.forEach(t => { const c = document.createElement("span"); c.className = "chip"; c.textContent = t; m.appendChild(c); });
+    d.appendChild(m); }
+  log.appendChild(d); log.scrollTop = log.scrollHeight;
+}
+async function send(text) {
+  add("user", esc(text));
+  const res = await fetch("/chat", { method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ message: text, session_id: sessionId }) });
+  const r = await res.json(); sessionId = r.session_id;
+  const meta = r.trace.map(t => t.agent + (t.tools.length ? ": " + t.tools.join(", ") : "") + ` (${t.ms} ms)`);
+  add("bot", md(r.answer), meta);
+}
+document.getElementById("f").onsubmit = e => { e.preventDefault(); const q = document.getElementById("q");
+  if (q.value.trim()) { send(q.value.trim()); q.value = ""; } };
+const ex = document.getElementById("examples");
+examples.forEach(t => { const b = document.createElement("button"); b.textContent = t; b.onclick = () => send(t); ex.appendChild(b); });
+</script>
+</body>
+</html>
