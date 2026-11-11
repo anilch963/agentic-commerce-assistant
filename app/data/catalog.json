@@ -1,0 +1,106 @@
+{
+  "_note": "Sample data for a demo store. Prices and specs are illustrative, not official Apple figures.",
+  "products": [
+    {
+      "sku": "iphone-17-pro-max",
+      "name": "iPhone 17 Pro Max",
+      "aliases": ["17 pro max", "pro max"],
+      "price_inr": 149900,
+      "storage_options_gb": [256, 512, 1024, 2048],
+      "colors": ["Cosmic Orange", "Deep Blue", "Silver"],
+      "display_in": 6.9,
+      "chip": "A19 Pro",
+      "camera": "48MP Fusion + 48MP Ultra Wide + 48MP 8x Telephoto",
+      "battery_hrs_video": 37,
+      "weight_g": 231,
+      "tags": ["camera", "battery", "gaming", "large screen", "video", "premium"]
+    },
+    {
+      "sku": "iphone-17-pro",
+      "name": "iPhone 17 Pro",
+      "aliases": ["17 pro"],
+      "price_inr": 134900,
+      "storage_options_gb": [256, 512, 1024],
+      "colors": ["Cosmic Orange", "Deep Blue", "Silver"],
+      "display_in": 6.3,
+      "chip": "A19 Pro",
+      "camera": "48MP Fusion + 48MP Ultra Wide + 48MP 8x Telephoto",
+      "battery_hrs_video": 31,
+      "weight_g": 204,
+      "tags": ["camera", "gaming", "video", "compact", "premium"]
+    },
+    {
+      "sku": "iphone-air",
+      "name": "iPhone Air",
+      "aliases": ["air", "17 air"],
+      "price_inr": 119900,
+      "storage_options_gb": [256, 512, 1024],
+      "colors": ["Sky Blue", "Light Gold", "Cloud White", "Space Black"],
+      "display_in": 6.5,
+      "chip": "A19 Pro",
+      "camera": "48MP Fusion",
+      "battery_hrs_video": 27,
+      "weight_g": 165,
+      "tags": ["lightweight", "thin", "design"]
+    },
+    {
+      "sku": "iphone-17",
+      "name": "iPhone 17",
+      "aliases": ["17", "iphone 17", "base 17"],
+      "price_inr": 82900,
+      "storage_options_gb": [256, 512],
+      "colors": ["Lavender", "Mist Blue", "Sage", "White", "Black"],
+      "display_in": 6.3,
+      "chip": "A19",
+      "camera": "48MP Fusion + 48MP Ultra Wide",
+      "battery_hrs_video": 30,
+      "weight_g": 177,
+      "tags": ["value", "battery", "everyday", "camera"]
+    },
+    {
+      "sku": "iphone-16",
+      "name": "iPhone 16",
+      "aliases": ["16", "iphone 16"],
+      "price_inr": 69900,
+      "storage_options_gb": [128, 256, 512],
+      "colors": ["Ultramarine", "Teal", "Pink", "White", "Black"],
+      "display_in": 6.1,
+      "chip": "A18",
+      "camera": "48MP Fusion + 12MP Ultra Wide",
+      "battery_hrs_video": 22,
+      "weight_g": 170,
+      "tags": ["value", "compact", "everyday"]
+    },
+    {
+      "sku": "iphone-16e",
+      "name": "iPhone 16e",
+      "aliases": ["16e"],
+      "price_inr": 59900,
+      "storage_options_gb": [128, 256, 512],
+      "colors": ["White", "Black"],
+      "display_in": 6.1,
+      "chip": "A18",
+      "camera": "48MP Fusion",
+      "battery_hrs_video": 26,
+      "weight_g": 167,
+      "tags": ["budget", "value", "battery", "students"]
+    }
+  ],
+  "inventory": {
+    "iphone-17-pro-max": {"Bengaluru": 4, "Hyderabad": 0, "Mumbai": 7, "Delhi": 3, "Chennai": 2},
+    "iphone-17-pro": {"Bengaluru": 9, "Hyderabad": 5, "Mumbai": 6, "Delhi": 8, "Chennai": 0},
+    "iphone-air": {"Bengaluru": 3, "Hyderabad": 2, "Mumbai": 0, "Delhi": 1, "Chennai": 4},
+    "iphone-17": {"Bengaluru": 15, "Hyderabad": 12, "Mumbai": 20, "Delhi": 11, "Chennai": 9},
+    "iphone-16": {"Bengaluru": 6, "Hyderabad": 8, "Mumbai": 5, "Delhi": 0, "Chennai": 7},
+    "iphone-16e": {"Bengaluru": 10, "Hyderabad": 6, "Mumbai": 12, "Delhi": 9, "Chennai": 5}
+  },
+  "offers": [
+    {"code": "BANK5", "description": "5% instant discount on HDFC/ICICI credit cards, max Rs 6,000", "pct": 5, "max_inr": 6000},
+    {"code": "STUDENT", "description": "Rs 3,000 off for verified students", "flat_inr": 3000}
+  ],
+  "trade_in_base_inr": {
+    "iphone 15 pro max": 62000, "iphone 15 pro": 52000, "iphone 15": 38000,
+    "iphone 14 pro": 40000, "iphone 14": 28000, "iphone 13": 22000,
+    "iphone 12": 15000, "iphone 11": 10000
+  }
+}
